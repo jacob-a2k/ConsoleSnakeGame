@@ -9,7 +9,7 @@ bool isUserChooseCorrectDirection(char chosenDirection, char actualDirection);
 bool isEmptyLocationForFood(Map map, int y, int x);
 bool isUserChoseCorectSign(char dir);
 bool isNextPositionEmpty(Map map, int y, int x);
-void setFoodInNewLocation(Map* map);
+void setFoodInNewLocation(Map* map,Point* food);
 
 int main() {
 
@@ -21,10 +21,10 @@ int main() {
 	int YposBeforeLoop;
 	int prevPosX;
 	int prevPosY;
-	char food = 'x';
 
 	srand(time(NULL));
-	setFoodInNewLocation(&map);
+	Point* food = new Point;
+	setFoodInNewLocation(&map,food);
 
 	char actualDirection = 'd';
 	char chosenDirection = actualDirection;
@@ -70,7 +70,7 @@ int main() {
 			Sleep(4000);
 			continue;
 		}
-		if (map.getSignFromGameMap(nextYpos, nextXpos) == food) {
+		if (map.getSignFromGameMap(nextYpos, nextXpos) == food->getSign()) {
 			snake.increaseSnakeSize();
 			if (snake.getSnakeSize() % 5 == 0) {
 				snake.increaseSnakeSpeed();
@@ -78,7 +78,7 @@ int main() {
 			Point* newPartOfSnake = new Point(snake.getHead(), nextYpos, nextXpos);
 			snake.setHead(newPartOfSnake);
 
-			setFoodInNewLocation(&map);
+			setFoodInNewLocation(&map,food);
 		}
 		Point* current = snake.getHead();
 
@@ -87,12 +87,12 @@ int main() {
 			prevPosY = current->getY();
 			current->setX(nextXpos);
 			current->setY(nextYpos);
-			map.setSignInGameMap(current->getY(), current->getX(), 'o');
+			map.setSignInGameMap(current);
 			nextXpos = prevPosX;
 			nextYpos = prevPosY;
 			current = current->getNext();
 		}
-		map.setSignInGameMap(prevPosY, prevPosX, ' ');
+		map.clearTail(prevPosY, prevPosX, ' ');
 		delete current;
 		nextXpos = XposBeforeLoop;
 		nextYpos = YposBeforeLoop;
@@ -133,12 +133,15 @@ bool isUserChoseCorectSign(char dir) {
 	}
 	return false;
 }
-void setFoodInNewLocation(Map* map) {
+void setFoodInNewLocation(Map* map,Point* food) {
 	int randomRow = rand() % 29 + 1;
 	int randomColumn = rand() % 119 + 1;
 	while (!isEmptyLocationForFood(map, randomRow, randomColumn)) {
 		randomRow = rand() % 29 + 1;
 		randomColumn = rand() % 119 + 1;
 	}
-	map->setSignInGameMap(randomRow, randomColumn, 'x');
+	food->setY(randomRow);
+	food->setX(randomColumn);
+	food->setSign('x');
+	map->setSignInGameMap(food);
 }

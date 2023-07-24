@@ -28,6 +28,9 @@ void Map::printMap() const {
 		std::cout << '\n';
 	}
 }
-void Map::setSignInGameMap(int posY, int posX, char sign) {
-	gameMap[posY][posX] = sign;
+void Map::setSignInGameMap(Point* food) {
+	gameMap[food->getY()][food->getX()] = food->getSign();
+}
+void Map::clearTail(int y, int x, char sign) {
+	gameMap[y][x] = sign;
 }

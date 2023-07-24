@@ -2,11 +2,12 @@
 #define POINT_H
 
 class Point {
+	char sign;
 	int y;
 	int x;
-public:
 	Point* next;
-	Point(Point* next = nullptr, int y = NULL, int x = NULL) : next(next), y(y), x(x) {}
+public:
+	Point(Point* next = nullptr, int y = NULL, int x = NULL,char sign = 'o') : next(next), y(y), x(x),sign(sign) {}
 	int getX() const { return x; }
 	int getY() const { return y; }
 	void setX(int number) { this->x = number; }
@@ -16,6 +17,8 @@ public:
 	}
 	Point* getNext() const { return next; }
 	void setNext(Point* nextPoint) { next = nextPoint; }
+	void setSign(char newSign) { sign = newSign; }
+	char getSign() const { return sign; }
 };
 
 #endif // POINT_H
