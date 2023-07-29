@@ -68,13 +68,7 @@ int main() {
 			continue;
 		}
 		if (nextPosition == foodPosition) {
-			snake.increaseSnakeSize();
-			if (snake.getSnakeSize() % 5 == 0) {
-				snake.increaseSnakeSpeed();
-			}
-			PartOfSnake* newPartOfSnake = new PartOfSnake(nextPosition, snake.getHead());
-			snake.setHead(newPartOfSnake);
-
+			snake.increase(nextPosition);
 			foodPosition = getNextPositionForFood(&map);
 			map.setSignInGameMap(foodPosition, 'x');
 		}
