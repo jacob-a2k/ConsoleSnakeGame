@@ -1,30 +1,27 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
-#include "Point.h"
 #include "Snake.h"
 #include "Map.h"
 
 bool isUserChooseCorrectDirection(char chosenDirection, char actualDirection);
-bool isEmptyLocationForFood(Map map, int y, int x);
+bool isEmptyLocationForFood(Map map, const MapPoint & point);
 bool isUserChoseCorectSign(char dir);
-bool isNextPositionEmpty(Map map, int y, int x);
-void setFoodInNewLocation(Map* map,Point* food);
+bool isNextPositionEmpty(Map map, const MapPoint & point);
+MapPoint getNextPositionForFood(Map* map);
 
 int main() {
 
 	Snake snake;
 	Map map;
-
 	bool error = false;
-	int XposBeforeLoop;
-	int YposBeforeLoop;
-	int prevPosX;
-	int prevPosY;
+	MapPoint positionBeforeLoop(0, 0);
+	MapPoint prevPosition(0, 0);
 
 	srand(time(NULL));
-	Point* food = new Point;
-	setFoodInNewLocation(&map,food);
+
+	MapPoint foodPosition = getNextPositionForFood(&map);
+	map.setSignInGameMap(foodPosition, 'x');
 
 	char actualDirection = 'd';
 	char chosenDirection = actualDirection;
@@ -59,10 +56,10 @@ int main() {
 			chosenDirection = actualDirection;
 			continue;
 		}
-		XposBeforeLoop = nextXpos;
-		YposBeforeLoop = nextYpos;
+		MapPoint nextPosition(nextYpos, nextXpos);
+		positionBeforeLoop = nextPosition;
 
-		if (isNextPositionEmpty(map, nextYpos, nextXpos)) {
+		if (isNextPositionEmpty(map, nextPosition)) {
 			error = true;
 			map.printMap();
 			std::cout << "\n\n\n";
@@ -70,32 +67,32 @@ int main() {
 			Sleep(4000);
 			continue;
 		}
-		if (map.getSignFromGameMap(nextYpos, nextXpos) == food->getSign()) {
+		if (nextPosition == foodPosition) {
 			snake.increaseSnakeSize();
 			if (snake.getSnakeSize() % 5 == 0) {
 				snake.increaseSnakeSpeed();
 			}
-			Point* newPartOfSnake = new Point(snake.getHead(), nextYpos, nextXpos);
+			PartOfSnake* newPartOfSnake = new PartOfSnake(nextPosition, snake.getHead());
 			snake.setHead(newPartOfSnake);
 
-			setFoodInNewLocation(&map,food);
+			foodPosition = getNextPositionForFood(&map);
+			map.setSignInGameMap(foodPosition, 'x');
 		}
-		Point* current = snake.getHead();
+		PartOfSnake* current = snake.getHead();
 
 		while (current != nullptr) {
-			prevPosX = current->getX();
-			prevPosY = current->getY();
-			current->setX(nextXpos);
-			current->setY(nextYpos);
-			map.setSignInGameMap(current);
-			nextXpos = prevPosX;
-			nextYpos = prevPosY;
+			prevPosition = current->getPosition();
+			current->setPosition(nextPosition);
+			MapPoint position = current->getPosition();
+			map.setSignInGameMap(position,'o');
+			nextPosition = prevPosition;
 			current = current->getNext();
 		}
-		map.clearTail(prevPosY, prevPosX, ' ');
+
+		map.setSignInGameMap(prevPosition,' ');
+
 		delete current;
-		nextXpos = XposBeforeLoop;
-		nextYpos = YposBeforeLoop;
+		nextPosition = positionBeforeLoop;
 
 		map.printMap();
 		Sleep(snake.getSnakeSpeed());
@@ -114,15 +111,15 @@ bool isUserChooseCorrectDirection(char chosenDirection, char actualDirection) {
 	}
 	return false;
 }
-bool isEmptyLocationForFood(Map* map, int y, int x) {
-	if (map->getSignFromGameMap(y, x) == ' ') {
+bool isEmptyLocationForFood(Map* map, MapPoint& point) {
+	if (map->getSignFromGameMap(point) == ' ') {
 		return true;
 	}
 	return false;
 }
-bool isNextPositionEmpty(Map map, int y, int x) {
-	if (map.getSignFromGameMap(y, x) == '|' || map.getSignFromGameMap(y, x) == '-' ||
-		map.getSignFromGameMap(y, x) == 'o') {
+bool isNextPositionEmpty(Map map, const MapPoint & point) {
+	if (map.getSignFromGameMap(point) == '|' || map.getSignFromGameMap(point) == '-' ||
+		map.getSignFromGameMap(point) == 'o') {
 		return true;
 	}
 	return false;
@@ -133,15 +130,14 @@ bool isUserChoseCorectSign(char dir) {
 	}
 	return false;
 }
-void setFoodInNewLocation(Map* map,Point* food) {
-	int randomRow = rand() % 29 + 1;
-	int randomColumn = rand() % 119 + 1;
-	while (!isEmptyLocationForFood(map, randomRow, randomColumn)) {
-		randomRow = rand() % 29 + 1;
-		randomColumn = rand() % 119 + 1;
+
+MapPoint getNextPositionForFood(Map* map) {
+	while (true) {
+		int randomRow = rand() % 29 + 1;
+		int randomColumn = rand() % 119 + 1;
+		MapPoint foodPosition = MapPoint(randomRow, randomColumn);
+		if (isEmptyLocationForFood(map, foodPosition)) {
+			return foodPosition;
+		}
 	}
-	food->setY(randomRow);
-	food->setX(randomColumn);
-	food->setSign('x');
-	map->setSignInGameMap(food);
 }
