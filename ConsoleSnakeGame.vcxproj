@@ -129,12 +129,12 @@
   <ItemGroup>
     <ClCompile Include="ConsoleSnakeGame.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MapPoint.cpp" />
+    <ClCompile Include="Point.cpp" />
     <ClCompile Include="PartOfSnake.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h" />
-    <ClInclude Include="MapPoint.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="PartOfSnake.h" />
     <ClInclude Include="Snake.h" />
   </ItemGroup>

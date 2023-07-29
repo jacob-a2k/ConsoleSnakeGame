@@ -24,7 +24,7 @@
     <ClCompile Include="PartOfSnake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapPoint.cpp">
+    <ClCompile Include="Point.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,7 +38,7 @@
     <ClInclude Include="PartOfSnake.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapPoint.h">
+    <ClInclude Include="Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

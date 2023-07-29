@@ -5,22 +5,22 @@
 #include "Map.h"
 
 bool isUserChooseCorrectDirection(char chosenDirection, char actualDirection);
-bool isEmptyLocationForFood(Map map, const MapPoint & point);
+bool isEmptyLocationForFood(Map map, const Point & point);
 bool isUserChoseCorectSign(char dir);
-bool isNextPositionEmpty(Map map, const MapPoint & point);
-MapPoint getNextPositionForFood(Map* map);
+bool isNextPositionEmpty(Map map, const Point& point);
+Point getNextPositionForFood(Map* map);
 
 int main() {
 
 	Snake snake;
 	Map map;
 	bool error = false;
-	MapPoint positionBeforeLoop(0, 0);
-	MapPoint prevPosition(0, 0);
+	Point positionBeforeLoop(0, 0);
+	Point prevPosition(0, 0);
 
 	srand(time(NULL));
 
-	MapPoint foodPosition = getNextPositionForFood(&map);
+	Point foodPosition = getNextPositionForFood(&map);
 	map.setSignInGameMap(foodPosition, 'x');
 
 	char actualDirection = 'd';
@@ -56,7 +56,7 @@ int main() {
 			chosenDirection = actualDirection;
 			continue;
 		}
-		MapPoint nextPosition(nextYpos, nextXpos);
+		Point nextPosition(nextYpos, nextXpos);
 		positionBeforeLoop = nextPosition;
 
 		if (isNextPositionEmpty(map, nextPosition)) {
@@ -83,7 +83,7 @@ int main() {
 		while (current != nullptr) {
 			prevPosition = current->getPosition();
 			current->setPosition(nextPosition);
-			MapPoint position = current->getPosition();
+			Point position = current->getPosition();
 			map.setSignInGameMap(position,'o');
 			nextPosition = prevPosition;
 			current = current->getNext();
@@ -111,13 +111,13 @@ bool isUserChooseCorrectDirection(char chosenDirection, char actualDirection) {
 	}
 	return false;
 }
-bool isEmptyLocationForFood(Map* map, MapPoint& point) {
+bool isEmptyLocationForFood(Map* map, Point& point) {
 	if (map->getSignFromGameMap(point) == ' ') {
 		return true;
 	}
 	return false;
 }
-bool isNextPositionEmpty(Map map, const MapPoint & point) {
+bool isNextPositionEmpty(Map map, const Point& point) {
 	if (map.getSignFromGameMap(point) == '|' || map.getSignFromGameMap(point) == '-' ||
 		map.getSignFromGameMap(point) == 'o') {
 		return true;
@@ -131,11 +131,11 @@ bool isUserChoseCorectSign(char dir) {
 	return false;
 }
 
-MapPoint getNextPositionForFood(Map* map) {
+Point getNextPositionForFood(Map* map) {
 	while (true) {
 		int randomRow = rand() % 29 + 1;
 		int randomColumn = rand() % 119 + 1;
-		MapPoint foodPosition = MapPoint(randomRow, randomColumn);
+		Point foodPosition = Point(randomRow, randomColumn);
 		if (isEmptyLocationForFood(map, foodPosition)) {
 			return foodPosition;
 		}

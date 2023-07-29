@@ -28,6 +28,6 @@ void Map::printMap() const {
 		std::cout << '\n';
 	}
 }
-void Map::setSignInGameMap(const MapPoint& point, char sign) {
+void Map::setSignInGameMap(const Point& point, char sign) {
 	gameMap[point.getY()][point.getX()] = sign;
 }

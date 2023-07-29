@@ -9,7 +9,7 @@ class Snake {
 
 public:
 	Snake(int size = 1, int speed = 100) : snakeSize(size), snakeSpeed(speed) { 
-		MapPoint headPosition(10, 10);
+		Point headPosition(10, 10);
 		head = new PartOfSnake(headPosition);
 	}
 	PartOfSnake* getHead() const { return head; }
