@@ -1,28 +1,16 @@
 #include <iostream>
 #include "Map.h"
 
-Map::Map() {
-	gameMap[0][0] = '+';
-	for (int i = 1; i < 119; ++i) {
-		gameMap[0][i] = '-';
+Map::Map(int width, int height) : height(height), width(width) {
+	gameMap = new char* [height];
+	for (int i = 0; i < height; i++) {
+		gameMap[i] = new char[width];
 	}
-	gameMap[0][119] = '+';
-	for (int j = 1; j < 29; ++j) {
-		gameMap[j][0] = '|';
-		for (int i = 1; i < 119; ++i) {
-			gameMap[j][i] = ' ';
-		}
-		gameMap[j][119] = '|';
-	}
-	gameMap[29][0] = '+';
-	for (int i = 1; i < 119; ++i) {
-		gameMap[29][i] = '-';
-	}
-	gameMap[29][119] = '+';
+	fillMap();
 }
 void Map::printMap() const {
-	for (int i = 0; i < 30; i++) {
-		for (int j = 0; j < 120; j++) {
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
 			std::cout << gameMap[i][j];
 		}
 		std::cout << '\n';
@@ -30,4 +18,23 @@ void Map::printMap() const {
 }
 void Map::setSignInGameMap(const Point& point, char sign) {
 	gameMap[point.getY()][point.getX()] = sign;
+}
+void Map::fillMap() {
+	gameMap[0][0] = '+';
+	for (int i = 1; i < width -1; ++i) {
+		gameMap[0][i] = '-';
+	}
+	gameMap[0][width -1] = '+';
+	for (int j = 1; j < height -1; ++j) {
+		gameMap[j][0] = '|';
+		for (int i = 1; i < width -1; ++i) {
+			gameMap[j][i] = ' ';
+		}
+		gameMap[j][width-1] = '|';
+	}
+	gameMap[height - 1][0] = '+';
+	for (int i = 1; i < width-1; ++i) {
+		gameMap[height - 1][i] = '-';
+	}
+	gameMap[height - 1][width-1] = '+';
 }

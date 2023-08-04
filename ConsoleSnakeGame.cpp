@@ -11,9 +11,18 @@ bool isNextPositionEmpty(Map map, const Point& point);
 Point getNextPositionForFood(Map* map);
 
 int main() {
+	std::cout << "Welcome.Let's play in SnakeConsoleGame\n";
+	std::cout << "Chose size of map\n ";
+	std::cout << "Input width\n";
+	int width = NULL;
+	std::cin >> width;
+	std::cout << "Input hight\n";
+	int height = NULL;
+	std::cin >> height;
 
+
+	Map map(height, width);
 	Snake snake;
-	Map map;
 	bool error = false;
 	Point positionBeforeLoop(0, 0);
 	Point prevPosition(0, 0);

@@ -1,8 +1,6 @@
 #include "Point.h"
 
-Point::Point() : y(0), x(0) {
-
-}
+Point::Point() : y(0), x(0) {}
 
 Point::Point(int y, int x) {
 	this->y = y;
