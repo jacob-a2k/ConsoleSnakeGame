@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Map.h"
 
-Map::Map(int width, int height) : height(height), width(width) {
+Map::Map(int height, int width) : height(height), width(width) {
 	gameMap = new char* [height];
 	for (int i = 0; i < height; i++) {
 		gameMap[i] = new char[width];
